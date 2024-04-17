@@ -21,6 +21,7 @@ let page = 1;
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
   keyword = searchInput.value.trim();
+  loadMoreButton.style.display = 'none';
   if (!keyword) {
     iziToast.error({
       position: 'topRight',
@@ -74,7 +75,7 @@ loadMoreButton.addEventListener('click', async () => {
   try {
     const images = await fetchImages(keyword, page);
 
-    if (images.totalHits % perPage) {
+    if (images.hits.length < perPage) {
       loadMoreButton.style.display = 'none';
       iziToast.info({
         position: 'topRight',
@@ -84,7 +85,7 @@ loadMoreButton.addEventListener('click', async () => {
     }
     createMarkup(images.hits);
     lightbox.refresh();
-    if (images.length > 0) {
+    if (images.hits.length > 0) {
       // Отримання висоти однієї карточки галереї
       const galleryItemHeight = document
         .querySelector('.card')
