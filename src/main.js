@@ -21,6 +21,7 @@ let page = 1;
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
   keyword = searchInput.value.trim();
+  page = 1;
   loadMoreButton.style.display = 'none';
   if (!keyword) {
     iziToast.error({
@@ -33,7 +34,7 @@ searchForm.addEventListener('submit', async event => {
   loader.style.display = 'block';
   clearGallery();
   try {
-    const images = await fetchImages(keyword);
+    const images = await fetchImages(keyword, page);
     if (images.length === 0) {
       iziToast.info({
         position: 'topRight',
